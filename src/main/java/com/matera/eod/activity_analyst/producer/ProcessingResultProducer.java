@@ -8,6 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class ProcessingResultProducer {
@@ -23,12 +25,17 @@ public class ProcessingResultProducer {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Value("${topic.partition:3}")
+    private int partitions;
+
+    private final Random random = ThreadLocalRandom.current();
+
     public void sendProcessingResult(Long processingId, String processName) throws JsonProcessingException {
         String msg = MessageFormat.format("All activities from process {0}, processing id {1} were executed",
                 processName, String.valueOf(processingId));
         System.out.println(msg);
         System.out.println("Sending information to topic " + processigResultTopic);
-        kafkaTemplate.send(processigResultTopic, PARTITION, null, msg);
+        kafkaTemplate.send(processigResultTopic, random.nextInt(partitions), null, msg);
     }
 
 }

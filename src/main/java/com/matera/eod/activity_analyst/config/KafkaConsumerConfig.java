@@ -33,6 +33,7 @@ public class KafkaConsumerConfig {
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, activityResultGroupId);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        properties.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, false);
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 
